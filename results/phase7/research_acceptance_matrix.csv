@@ -1,0 +1,16 @@
+Research_Requirement,Implementation_Module,Research_Evidence,Validation_Status
+Dynamic In-Season Prediction,src/dynamic/dynamic_predictor.py,Continuous yield forecasting as new in-season observations arrive,VERIFIED / ACCEPTED
+Current Farm State Reconstruction,src/data/farm_state.py,Reconstructs complete feature state as of date <= t,VERIFIED / ACCEPTED
+Historical State Preservation,src/data/farm_state.py,Append-only immutable observation log preserves history,VERIFIED / ACCEPTED
+Farmer-Friendly Irrigation Input,src/data/irrigation.py,Pump runtime (hours) input with auto depth conversion,VERIFIED / ACCEPTED
+Weather Integration Architecture,src/data/weather_api.py,Open-Meteo & Mock provider abstraction with source tags,VERIFIED / ACCEPTED
+Temporal Leakage Protection,src/data/farm_state.py,Strict cutoff filtering: observations/events with date > t discarded,VERIFIED / ACCEPTED
+Explainable AI (TreeSHAP),src/explainability/shap_explainer.py,CatBoost native TreeSHAP with exact additive property,VERIFIED / ACCEPTED
+Farmer-Friendly Translation,src/explainability/farmer_translator.py,Non-causal plain-language agricultural narratives,VERIFIED / ACCEPTED
+Prediction History & Deltas,src/data/farm_state.py,Full chronological audit log and delta tracking,VERIFIED / ACCEPTED
+Prediction Trajectory Visualization,src/ui/app.py,Interactive forecast trajectory chart over crop age (DAP),VERIFIED / ACCEPTED
+Persistent Farm Storage,src/storage/farm_repository.py,"JSON repository persists farm profiles, history & predictions",VERIFIED / ACCEPTED
+Zero Physical Hardware Constraint,System Architecture,100% software-based without IoT sensors or cameras,VERIFIED / ACCEPTED
+Farm-Level Grouped Validation,src/models/train_models.py,GroupKFold & GroupShuffleSplit prevent data leakage across farms,VERIFIED / ACCEPTED
+In-Season Stage Checkpoint Evaluation,src/evaluation/phase7_evaluator.py,Evaluated across 5 canonical growth stages on 200 test farms,VERIFIED / ACCEPTED
+Research Reproducibility & Integrity,scripts/master & seed=42,Raw dataset untouched; deterministic random seeds documented,VERIFIED / ACCEPTED

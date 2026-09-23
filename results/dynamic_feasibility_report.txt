@@ -1,0 +1,56 @@
+================================================================================
+DYNAMIC IN-SEASON PREDICTION FEASIBILITY & LIMITATION REPORT
+Research Module: IT41012 | Ginger Yield Prediction System
+================================================================================
+
+[has_farm_id]
+True
+
+[has_observation_id]
+False
+
+[has_days_after_planting]
+True
+
+[has_growth_stage]
+True
+
+[unique_farms]
+1000
+
+[min_observations_per_farm]
+1
+
+[max_observations_per_farm]
+21
+
+[mean_observations_per_farm]
+10.0
+
+[farms_with_multiple_districts]
+999
+
+[pct_farms_with_multiple_districts]
+99.9
+
+[farms_with_varying_final_yield]
+999
+
+[pct_farms_with_varying_final_yield]
+99.9
+
+[farms_with_multiple_planting_dates]
+999
+
+[pct_farms_with_multiple_planting_dates]
+99.9
+
+[avg_growth_stages_per_farm]
+4.77
+
+[critical_limitation]
+CRITICAL RESEARCH FINDING: In the current dataset, records sharing the same 'Farm_ID' exhibit varying Districts, Planting Dates, and Final Actual Yield values. This confirms that 'Farm_ID' was randomly assigned or sampled per observation rather than tracking a true physical farm over a single cultivation cycle. Consequently, dynamic prediction must be framed as growth-stage/DAP-indexed observation slices rather than true farm-level longitudinal panel tracking.
+
+[recommended_dynamic_approach]
+Model dynamic in-season predictions using stratified growth-stage cohorts (e.g., Emergence, Vegetative, Rhizome Initiation, Rhizome Enlargement, Maturity) where cumulative feature observations up to stage 't' predict the final yield.
+

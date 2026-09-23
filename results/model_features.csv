@@ -1,0 +1,37 @@
+Feature,Data_Type,Source,Role,Used_In_Model
+Days_After_Planting,int64,Engineered,In-Season Predictive Feature,Yes
+Land_Size_Acres,float64,Engineered,In-Season Predictive Feature,Yes
+Soil_pH,float64,Engineered,In-Season Predictive Feature,Yes
+Soil_Moisture_pct,float64,Engineered,In-Season Predictive Feature,Yes
+Weekly_Rainfall_mm,float64,Engineered,In-Season Predictive Feature,Yes
+Avg_Temperature_C,float64,Engineered,In-Season Predictive Feature,Yes
+Relative_Humidity_pct,float64,Engineered,In-Season Predictive Feature,Yes
+Solar_Radiation_MJ_m2_day,float64,Engineered,In-Season Predictive Feature,Yes
+Irrigation_mm_week,float64,Engineered,In-Season Predictive Feature,Yes
+Fertilizer_kg_acre,float64,Engineered,In-Season Predictive Feature,Yes
+Plant_Height_cm,float64,Engineered,In-Season Predictive Feature,Yes
+Leaf_Greenness_Index,float64,Engineered,In-Season Predictive Feature,Yes
+Total_Water_Input_mm,float64,Engineered,In-Season Predictive Feature,Yes
+Plant_Height_per_DAP,float64,Engineered,In-Season Predictive Feature,Yes
+Canopy_Greenness_Volume,float64,Engineered,In-Season Predictive Feature,Yes
+Biotic_Stress_Index,int64,Engineered,In-Season Predictive Feature,Yes
+Planting_Month,int64,Engineered,In-Season Predictive Feature,Yes
+Growth_Stage_Ordinal,int64,Engineered,In-Season Predictive Feature,Yes
+Pest_Severity_Ordinal,int64,Engineered,In-Season Predictive Feature,Yes
+Disease_Severity_Ordinal,int64,Engineered,In-Season Predictive Feature,Yes
+District_Badulla,int64,Engineered,In-Season Predictive Feature,Yes
+District_Galle,int64,Engineered,In-Season Predictive Feature,Yes
+District_Kandy,int64,Engineered,In-Season Predictive Feature,Yes
+District_Kegalle,int64,Engineered,In-Season Predictive Feature,Yes
+District_Kurunegala,int64,Engineered,In-Season Predictive Feature,Yes
+District_Matale,int64,Engineered,In-Season Predictive Feature,Yes
+District_Matara,int64,Engineered,In-Season Predictive Feature,Yes
+District_Monaragala,int64,Engineered,In-Season Predictive Feature,Yes
+District_Nuwara Eliya,int64,Engineered,In-Season Predictive Feature,Yes
+District_Ratnapura,int64,Engineered,In-Season Predictive Feature,Yes
+Seed_Variety_Chinese,int64,Engineered,In-Season Predictive Feature,Yes
+Seed_Variety_Local,int64,Engineered,In-Season Predictive Feature,Yes
+Seed_Variety_Nadun,int64,Engineered,In-Season Predictive Feature,Yes
+Soil_Type_Clay Loam,int64,Engineered,In-Season Predictive Feature,Yes
+Soil_Type_Loam,int64,Engineered,In-Season Predictive Feature,Yes
+Soil_Type_Sandy Loam,int64,Engineered,In-Season Predictive Feature,Yes

@@ -1,0 +1,37 @@
+Feature,Label,Unit,Mean_Abs_SHAP_t_ha,Rank
+Days_After_Planting,Days After Planting,days,0.9266,1
+Canopy_Greenness_Volume,Canopy Greenness Volume,index,0.6242,2
+Biotic_Stress_Index,Biotic Stress Index,score (0-4),0.62,3
+Fertilizer_kg_acre,Fertilizer Applied,kg/acre,0.3575,4
+Weekly_Rainfall_mm,Weekly Rainfall,mm,0.3447,5
+Growth_Stage_Ordinal,Growth Stage Level,stage (0-5),0.3328,6
+Plant_Height_cm,Plant Height,cm,0.2708,7
+Soil_pH,Soil pH Level,pH,0.2592,8
+Plant_Height_per_DAP,Daily Growth Velocity,cm/day,0.244,9
+Total_Water_Input_mm,Total Water Input,mm,0.1522,10
+Disease_Severity_Ordinal,Disease Severity Level,score (0-2),0.099,11
+Pest_Severity_Ordinal,Pest Severity Level,score (0-2),0.0985,12
+Soil_Moisture_pct,Soil Moisture,%,0.0604,13
+Leaf_Greenness_Index,Leaf Greenness Index,SPAD,0.0527,14
+Irrigation_mm_week,Weekly Irrigation Applied,mm,0.038,15
+Solar_Radiation_MJ_m2_day,Solar Radiation,MJ/m²/day,0.0134,16
+Relative_Humidity_pct,Relative Humidity,%,0.0123,17
+Avg_Temperature_C,Average Temperature,°C,0.0079,18
+Land_Size_Acres,Cultivated Land Size,acres,0.0036,19
+Soil_Type_Sandy Loam,Soil Type: Sandy Loam,binary,0.0032,20
+Planting_Month,Planting Month,month (1-12),0.0027,21
+Seed_Variety_Chinese,Seed Variety: Chinese,binary,0.0026,22
+Soil_Type_Loam,Soil Type: Loam,binary,0.0023,23
+District_Monaragala,District: Monaragala,binary,0.002,24
+Seed_Variety_Local,Seed Variety: Local,binary,0.0019,25
+District_Kegalle,District: Kegalle,binary,0.0005,26
+District_Ratnapura,District: Ratnapura,binary,0.0005,27
+District_Matale,District: Matale,binary,0.0004,28
+District_Badulla,District: Badulla,binary,0.0004,29
+District_Matara,District: Matara,binary,0.0003,30
+District_Galle,District: Galle,binary,0.0,31
+District_Kandy,District: Kandy,binary,0.0,32
+District_Kurunegala,District: Kurunegala,binary,0.0,33
+District_Nuwara Eliya,District: Nuwara Eliya,binary,0.0,34
+Soil_Type_Clay Loam,Soil Type: Clay Loam,binary,0.0,35
+Seed_Variety_Nadun,Seed Variety: Nadun,binary,0.0,36

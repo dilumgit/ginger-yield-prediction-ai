@@ -1,0 +1,5 @@
+Model,Best_CV_MAE,Best_Parameters
+CatBoost,0.6167,"{'learning_rate': 0.06, 'l2_leaf_reg': 3, 'iterations': 350, 'depth': 4}"
+LightGBM,0.6341,"{'subsample': 0.85, 'num_leaves': 31, 'n_estimators': 150, 'max_depth': 4, 'learning_rate': 0.1}"
+XGBoost,0.634,"{'subsample': 1.0, 'n_estimators': 150, 'max_depth': 4, 'learning_rate': 0.06, 'colsample_bytree': 0.85}"
+Random Forest,0.7056,"{'n_estimators': 150, 'min_samples_split': 10, 'min_samples_leaf': 2, 'max_depth': 16}"

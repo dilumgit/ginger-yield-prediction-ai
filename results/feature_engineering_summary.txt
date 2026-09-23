@@ -1,0 +1,147 @@
+================================================================================
+PHASE 2: FEATURE ENGINEERING & DATA PREPROCESSING SUMMARY
+Research Module: IT41012 | Ginger Yield Prediction Research
+================================================================================
+
+1. ORIGINAL RAW COLUMNS (Total: 22)
+   - Farm_ID
+   - District
+   - Planting_Date
+   - Days_After_Planting
+   - Growth_Stage
+   - Land_Size_Acres
+   - Seed_Variety
+   - Soil_Type
+   - Soil_pH
+   - Soil_Moisture_pct
+   - Weekly_Rainfall_mm
+   - Avg_Temperature_C
+   - Relative_Humidity_pct
+   - Solar_Radiation_MJ_m2_day
+   - Irrigation_mm_week
+   - Fertilizer_kg_acre
+   - Pest_Severity
+   - Disease_Severity
+   - Plant_Height_cm
+   - Leaf_Greenness_Index
+   - Predicted_Final_Yield_t_ha
+   - Actual_Final_Yield_t_ha
+
+2. TARGET VARIABLE
+   - Target Column: Actual_Final_Yield_t_ha
+   - Role: Ground truth dependent variable (Final harvested yield in t/ha).
+   - In-Season Status: Post-harvest ground truth (Never used as feature).
+
+3. LEAKAGE RISK COLUMNS (ISOLATED FROM MODEL INPUTS)
+   - Predicted_Final_Yield_t_ha
+     Reason: Pre-existing prediction field strongly correlated (r=0.988) with target.
+     Action: Retained in processed CSV for benchmark comparisons only; excluded from model X.
+
+4. IDENTIFIER / GROUPING COLUMNS
+   - Farm_ID
+     Reason: Administrative identifier; excluded from model inputs to prevent ID memorization.
+     Action: Retained in processed CSV for grouping and dynamic trajectory evaluation.
+
+5. CATEGORICAL ENCODING
+   A. Nominal Features (One-Hot Encoded):
+      * District (10 categories): ['Badulla', 'Galle', 'Kandy', 'Kegalle', 'Kurunegala', 'Matale', 'Matara', 'Monaragala', 'Nuwara Eliya', 'Ratnapura']
+        -> District_Badulla
+        -> District_Galle
+        -> District_Kandy
+        -> District_Kegalle
+        -> District_Kurunegala
+        -> District_Matale
+        -> District_Matara
+        -> District_Monaragala
+        -> District_Nuwara Eliya
+        -> District_Ratnapura
+      * Seed_Variety (3 categories): ['Chinese', 'Local', 'Nadun']
+        -> Seed_Variety_Chinese
+        -> Seed_Variety_Local
+        -> Seed_Variety_Nadun
+      * Soil_Type (3 categories): ['Clay Loam', 'Loam', 'Sandy Loam']
+        -> Soil_Type_Clay Loam
+        -> Soil_Type_Loam
+        -> Soil_Type_Sandy Loam
+
+   B. Ordinal Features (Biologically / Logically Ranked):
+      * Growth_Stage -> Growth_Stage_Ordinal: {'Sprouting': 0, 'Early Vegetative': 1, 'Vegetative': 2, 'Rhizome Initiation': 3, 'Rhizome Development': 4, 'Maturity': 5}
+      * Pest_Severity -> Pest_Severity_Ordinal: {'Low': 0, 'Medium': 1, 'High': 2}
+      * Disease_Severity -> Disease_Severity_Ordinal: {'Low': 0, 'Medium': 1, 'High': 2}
+
+6. ENGINEERED IN-SEASON FEATURES & AGRONOMIC JUSTIFICATIONS
+   - Total_Water_Input_mm:
+     * Formula: Weekly_Rainfall_mm + Irrigation_mm_week
+     * Agronomic Rationale: Net combined water supplied via natural rainfall and supplemental irrigation.
+     * In-Season Availability: Available at observation date.
+
+   - Plant_Height_per_DAP:
+     * Formula: Plant_Height_cm / Days_After_Planting
+     * Agronomic Rationale: Daily vertical elongation velocity (cm/day), capturing early vegetative vigor.
+     * In-Season Availability: Available at observation date.
+
+   - Canopy_Greenness_Volume:
+     * Formula: Plant_Height_cm * Leaf_Greenness_Index
+     * Agronomic Rationale: Composite proxy for active photosynthetic canopy biomass and chlorophyll content.
+     * In-Season Availability: Available at observation date.
+
+   - Biotic_Stress_Index:
+     * Formula: Pest_Severity_Ordinal + Disease_Severity_Ordinal (Range: 0 to 4)
+     * Agronomic Rationale: Quantifies cumulative biotic stress pressure from insect pests and pathogens.
+     * In-Season Availability: Available at observation date.
+
+   - Planting_Month:
+     * Formula: Extraction of calendar month from Planting_Date
+     * Agronomic Rationale: Captures planting timing relative to Sri Lankan monsoonal seasons (Yala / Maha).
+     * In-Season Availability: Known at planting.
+
+7. FINAL MODEL PREDICTOR MATRIX SPECIFICATION
+   - Total Features in Processed File: 46
+   - Features Used for Machine Learning (X): 36
+   - Feature List (X):
+      1. Days_After_Planting
+      2. Land_Size_Acres
+      3. Soil_pH
+      4. Soil_Moisture_pct
+      5. Weekly_Rainfall_mm
+      6. Avg_Temperature_C
+      7. Relative_Humidity_pct
+      8. Solar_Radiation_MJ_m2_day
+      9. Irrigation_mm_week
+     10. Fertilizer_kg_acre
+     11. Plant_Height_cm
+     12. Leaf_Greenness_Index
+     13. Total_Water_Input_mm
+     14. Plant_Height_per_DAP
+     15. Canopy_Greenness_Volume
+     16. Biotic_Stress_Index
+     17. Planting_Month
+     18. Growth_Stage_Ordinal
+     19. Pest_Severity_Ordinal
+     20. Disease_Severity_Ordinal
+     21. District_Badulla
+     22. District_Galle
+     23. District_Kandy
+     24. District_Kegalle
+     25. District_Kurunegala
+     26. District_Matale
+     27. District_Matara
+     28. District_Monaragala
+     29. District_Nuwara Eliya
+     30. District_Ratnapura
+     31. Seed_Variety_Chinese
+     32. Seed_Variety_Local
+     33. Seed_Variety_Nadun
+     34. Soil_Type_Clay Loam
+     35. Soil_Type_Loam
+     36. Soil_Type_Sandy Loam
+
+8. RESEARCH ASSUMPTIONS & LIMITATIONS
+   - Assumption 1: Weekly rainfall and irrigation are assumed to be recorded accurately for the 7 days prior to observation.
+   - Assumption 2: Leaf greenness index acts as a direct monotonic proxy for SPAD / chlorophyll density.
+   - Limitation 1: Cross-sectional nature of Farm_ID precludes within-farm temporal autoregressive lag features.
+   - Limitation 2: Weather observations represent weekly snapshots rather than continuous cumulative degree-day series.
+
+================================================================================
+END OF FEATURE ENGINEERING SUMMARY
+================================================================================

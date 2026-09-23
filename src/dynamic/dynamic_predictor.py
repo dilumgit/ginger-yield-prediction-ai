@@ -1,0 +1,287 @@
+"""Dynamic In-Season Predictor & Explainable AI Prediction Module (Phase 4 & 5).
+
+Connects continuous farm state management with trained ML regression models and TreeSHAP
+to produce in-season final yield forecasts (t/ha), compute prediction deltas, analyze
+state variables associated with prediction shifts, generate farmer-friendly narratives,
+and provide transparent agricultural recommendations.
+"""
+
+from typing import Any, Dict, List, Optional, Tuple, Union
+
+import numpy as np
+import pandas as pd
+
+from src.data.farm_state import FarmStateManager, PredictionHistory, PredictionRecord
+from src.explainability.explanation_model import FeatureContribution, PredictionExplanation
+from src.explainability.farmer_translator import FarmerExplanationTranslator
+from src.explainability.recommendations import FarmerRecommendationEngine
+from src.explainability.shap_explainer import GingerShapExplainer
+from src.models.predictor import GingerYieldPredictor
+from src.utils.config import BEST_MODEL_PATH
+
+
+class DynamicYieldPredictor:
+    """Dynamic prediction & explainability engine executing continuous in-season forecasts."""
+
+    def __init__(
+        self,
+        model_path: Optional[str] = None,
+        model_version: str = "CatBoost_Phase3_Baseline",
+    ):
+        """Initialize dynamic predictor and SHAP explainer with trained model artifact.
+
+        Parameters
+        ----------
+        model_path : str, optional
+            Path to serialized joblib model. Defaults to `BEST_MODEL_PATH`.
+        model_version : str, default="CatBoost_Phase3_Baseline"
+            Provenance identifier for prediction history logging.
+        """
+        self.predictor = GingerYieldPredictor(
+            model_path=model_path or BEST_MODEL_PATH,
+            model_version=model_version,
+        )
+        self.history = PredictionHistory()
+        self.explainer = GingerShapExplainer(model_path=model_path or BEST_MODEL_PATH)
+        self.translator = FarmerExplanationTranslator()
+        self.recommendation_engine = FarmerRecommendationEngine()
+
+    def predict_current_state(
+        self,
+        farm_manager: FarmStateManager,
+        as_of_date: Optional[str] = None,
+    ) -> Tuple[float, PredictionRecord, Optional[Dict[str, Any]]]:
+        """Generate yield prediction for the farm state as of `as_of_date`.
+
+        Parameters
+        ----------
+        farm_manager : FarmStateManager
+            Manager tracking farm profile, observations, irrigation, and weather.
+        as_of_date : str, optional
+            Cutoff date string (YYYY-MM-DD). If None, uses date of latest observation.
+
+        Returns
+        -------
+        Tuple[float, PredictionRecord, Optional[Dict[str, Any]]]
+            1. Predicted final yield in t/ha.
+            2. PredictionRecord appended to PredictionHistory.
+            3. Prediction change analysis dictionary if a previous prediction exists, else None.
+        """
+        # 1. Reconstruct current state without future leakage
+        state_dict = farm_manager.reconstruct_current_state(as_of_date=as_of_date)
+
+        # 2. Extract previous prediction before recording new one
+        farm_id = farm_manager.profile.farm_id
+        previous_records = self.history.get_farm_history(farm_id)
+        prev_record = previous_records[-1] if previous_records else None
+
+        # 3. Generate ML prediction
+        pred_arr = self.predictor.predict(state_dict)
+        pred_val = float(round(pred_arr[0], 4))
+
+        # 4. Record prediction in history
+        obs_date = as_of_date or str(state_dict.get("Date", state_dict.get("Planting_Date", "")))
+        record = self.history.record_prediction(
+            farm_id=farm_id,
+            days_after_planting=state_dict.get("Days_After_Planting", 0),
+            growth_stage=state_dict.get("Growth_Stage", "Unknown"),
+            predicted_yield_t_ha=pred_val,
+            model_version=self.predictor.model_version,
+            state_snapshot=state_dict,
+        )
+
+        # 5. Analyze factors associated with prediction change
+        change_analysis = None
+        if prev_record is not None:
+            change_analysis = self.analyze_prediction_change(record, prev_record)
+
+        return pred_val, record, change_analysis
+
+    def explain_prediction(
+        self,
+        farm_manager: FarmStateManager,
+        as_of_date: Optional[str] = None,
+        record: Optional[PredictionRecord] = None,
+        change_analysis: Optional[Dict[str, Any]] = None,
+        top_k: int = 5,
+    ) -> PredictionExplanation:
+        """Generate full comprehensive SHAP and farmer-friendly explanation for current state.
+
+        Parameters
+        ----------
+        farm_manager : FarmStateManager
+            Manager tracking farm state.
+        as_of_date : str, optional
+            Cutoff date string.
+        record : PredictionRecord, optional
+            Precomputed prediction record if already generated by update_farm_state.
+        change_analysis : Dict, optional
+            Precomputed change analysis if already generated.
+        top_k : int, default=5
+            Number of top positive and negative contributors to include.
+
+        Returns
+        -------
+        PredictionExplanation
+            Structured container with technical SHAP, plain-language translations, and recommendations.
+        """
+        # 1. Use precomputed record or execute prediction
+        if record is None:
+            pred_val, record, change_analysis = self.predict_current_state(
+                farm_manager=farm_manager,
+                as_of_date=as_of_date,
+            )
+        else:
+            pred_val = record.predicted_yield_t_ha
+
+        state_dict = record.state_snapshot
+        farm_id = farm_manager.profile.farm_id
+
+        # 2. Compute technical SHAP values
+        shap_res = self.explainer.explain_instance(state_dict, top_k=top_k)
+        top_pos: List[FeatureContribution] = shap_res["top_positive"]
+        top_neg: List[FeatureContribution] = shap_res["top_negative"]
+
+        # 3. Previous prediction delta metrics
+        prev_pred = change_analysis["previous_prediction_t_ha"] if change_analysis else None
+        delta_t_ha = change_analysis["prediction_delta_t_ha"] if change_analysis else None
+        delta_pct = change_analysis["prediction_delta_pct"] if change_analysis else None
+        changed_factors = change_analysis["modified_variables"] if change_analysis else []
+
+        # 4. Generate Farmer Translation Narrative
+        farmer_summary, supporting_pts, limiting_pts = self.translator.generate_farmer_explanation(
+            predicted_yield_t_ha=pred_val,
+            growth_stage=record.growth_stage,
+            days_after_planting=record.days_after_planting,
+            top_positive=top_pos,
+            top_negative=top_neg,
+            previous_prediction_t_ha=prev_pred,
+            prediction_delta_t_ha=delta_t_ha,
+        )
+
+        # 5. Generate Agronomic Recommendations and Factor Prioritization
+        recommendations = self.recommendation_engine.generate_recommendations(
+            state_snapshot=state_dict,
+            top_negative=top_neg,
+        )
+        factor_priorities = self.recommendation_engine.prioritize_factors(
+            top_positive=top_pos,
+            top_negative=top_neg,
+            changed_factors=changed_factors,
+            state_snapshot=state_dict,
+        )
+
+        # 6. Data Source Provenance List
+        data_sources = ["FARMER_REPORTED", "HISTORICAL_DATASET"]
+        if any(wx.data_source == "API_DERIVED" for wx in farm_manager.weather_observations):
+            data_sources.append("API_DERIVED")
+        elif any(wx.data_source == "SYNTHETIC_SIMULATED" for wx in farm_manager.weather_observations):
+            data_sources.append("SYNTHETIC_SIMULATED")
+
+        return PredictionExplanation(
+            farm_id=farm_id,
+            prediction_timestamp=record.prediction_timestamp,
+            days_after_planting=record.days_after_planting,
+            growth_stage=record.growth_stage,
+            predicted_yield_t_ha=pred_val,
+            base_value_t_ha=shap_res["base_value_t_ha"],
+            previous_prediction_t_ha=prev_pred,
+            prediction_delta_t_ha=delta_t_ha,
+            prediction_delta_pct=delta_pct,
+            top_positive_factors=top_pos,
+            top_negative_factors=top_neg,
+            changed_factors=changed_factors,
+            farmer_summary=farmer_summary,
+            farmer_supporting_points=supporting_pts,
+            farmer_limiting_points=limiting_pts,
+            recommendations=recommendations,
+            factor_priorities=factor_priorities,
+            model_version=self.predictor.model_version,
+            explanation_method="TreeSHAP",
+            data_sources=data_sources,
+        )
+
+    def analyze_prediction_change(
+        self,
+        current_record: PredictionRecord,
+        previous_record: PredictionRecord,
+    ) -> Dict[str, Any]:
+        """Analyze shifts between two prediction points and identify modified state factors.
+
+        Note: Factors are reported as 'associated with prediction change' according to
+        model feature differences, strictly avoiding unsupported causal claims.
+        """
+        curr_pred = current_record.predicted_yield_t_ha
+        prev_pred = previous_record.predicted_yield_t_ha
+        delta_t_ha = round(curr_pred - prev_pred, 4)
+
+        pct_change = round((delta_t_ha / prev_pred) * 100.0, 2) if prev_pred > 0 else 0.0
+
+        curr_state = current_record.state_snapshot
+        prev_state = previous_record.state_snapshot
+
+        # Track meaningful agricultural variables that changed
+        tracked_keys = [
+            ("Plant_Height_cm", "Plant Height", "cm"),
+            ("Leaf_Greenness_Index", "Leaf Greenness Index", "SPAD/index"),
+            ("Pest_Severity", "Pest Severity", "level"),
+            ("Disease_Severity", "Disease Severity", "level"),
+            ("Biotic_Stress_Index", "Biotic Stress Index", "score (0-4)"),
+            ("Soil_Moisture_pct", "Soil Moisture", "%"),
+            ("Soil_pH", "Soil pH", "pH"),
+            ("Irrigation_mm_week", "Weekly Irrigation", "mm"),
+            ("Pump_Runtime_Hours", "Recent Pump Runtime", "hours"),
+            ("Weekly_Rainfall_mm", "Weekly Rainfall", "mm"),
+            ("Total_Water_Input_mm", "Total Water Input", "mm"),
+            ("Avg_Temperature_C", "Average Temperature", "°C"),
+            ("Relative_Humidity_pct", "Relative Humidity", "%"),
+            ("Solar_Radiation_MJ_m2_day", "Solar Radiation", "MJ/m²/day"),
+            ("Growth_Stage", "Growth Stage", "stage"),
+            ("Days_After_Planting", "Days After Planting", "days"),
+        ]
+
+        variable_changes = []
+        for key, label, unit in tracked_keys:
+            prev_val = prev_state.get(key)
+            curr_val = curr_state.get(key)
+
+            if prev_val != curr_val and prev_val is not None and curr_val is not None:
+                # Format change description
+                if isinstance(curr_val, (int, float)) and isinstance(prev_val, (int, float)):
+                    diff = round(curr_val - prev_val, 3)
+                    desc = f"{prev_val} -> {curr_val} {unit} (diff: {diff:+})"
+                else:
+                    desc = f"'{prev_val}' -> '{curr_val}'"
+
+                variable_changes.append({
+                    "variable": key,
+                    "label": label,
+                    "previous_value": prev_val,
+                    "current_value": curr_val,
+                    "description": desc,
+                })
+
+        # Directional association summary
+        if delta_t_ha > 0:
+            direction = "increase"
+        elif delta_t_ha < 0:
+            direction = "decrease"
+        else:
+            direction = "no change"
+
+        summary_statement = (
+            f"Predicted final yield showed a {direction} of {abs(delta_t_ha):.2f} t/ha ({pct_change:+.1f}%), "
+            f"moving from {prev_pred:.2f} t/ha to {curr_pred:.2f} t/ha. "
+            f"This prediction update is associated with {len(variable_changes)} observed changes in crop and environmental state variables."
+        )
+
+        return {
+            "farm_id": current_record.farm_id,
+            "previous_prediction_t_ha": prev_pred,
+            "current_prediction_t_ha": curr_pred,
+            "prediction_delta_t_ha": delta_t_ha,
+            "prediction_delta_pct": pct_change,
+            "direction": direction,
+            "summary_statement": summary_statement,
+            "modified_variables": variable_changes,
+        }

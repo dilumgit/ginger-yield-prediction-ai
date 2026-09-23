@@ -1,0 +1,6 @@
+Scenario_Name,Update_Count,DAPs_Logged,Initial_Forecast_t_ha,Final_Forecast_t_ha,Forecast_Shift_t_ha,State_Reconstruction_Success,No_Data_Fabrication_Confirmed
+Frequent Updates (Every ~30 Days),8,"[30, 60, 90, 120, 150, 180, 210, 240]",12.327,16.3354,4.0084,True,True
+Moderate Updates (Every ~60 Days),4,"[30, 90, 150, 210]",12.327,15.6067,3.2797,True,True
+Sparse Updates (2 In-Season Updates),2,"[30, 180]",12.327,15.0823,2.7553,True,True
+Missing Irrigation Logs (Unreported Watering),4,"[30, 60, 120, 180]",12.327,15.0823,2.7553,True,True
+Missing Mid-Season Crop Scouting,2,"[30, 210]",12.327,15.6067,3.2797,True,True

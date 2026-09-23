@@ -1,0 +1,28 @@
+Feature,Original_or_Engineered,Data_Type,Source_Features,Description,In_Season_Available,Used_For_Model,Reason
+Farm_ID,Original,String,Raw Dataset,Unique farm identification code (e.g. F0001 to F1000).,Yes,No,Identifier / grouping column. Excluded to prevent spurious farm-id memorization.
+Planting_Date,Original,Date String,Raw Dataset,Rhizome planting date (YYYY-MM-DD).,Yes,No,Raw date string retained for traceability; decomposed into Planting_Month.
+Days_After_Planting,Original,Integer,Raw Dataset,Observation time point measured in days elapsed since planting.,Yes,Yes,Primary temporal index of crop phenological maturity.
+Land_Size_Acres,Original,Float,Raw Dataset,Farm plot cultivation size in acres.,Yes,Yes,Farm scale covariate impacting management capacity.
+Soil_pH,Original,Float,Raw Dataset,Soil acidity/alkalinity level (optimal for ginger: 5.5 - 6.5).,Yes,Yes,Critical soil chemistry parameter governing nutrient availability.
+Soil_Moisture_pct,Original,Float,Raw Dataset,Volumetric soil moisture percentage.,Yes,Yes,Direct root-zone water availability indicator.
+Weekly_Rainfall_mm,Original,Float,Raw Dataset,Cumulative rainfall recorded in observation week (mm).,Yes,Yes,Primary meteorological water source.
+Avg_Temperature_C,Original,Float,Raw Dataset,Mean ambient air temperature (°C).,Yes,Yes,Thermal driving force for vegetative growth and evapotranspiration.
+Relative_Humidity_pct,Original,Float,Raw Dataset,Mean relative atmospheric humidity (%).,Yes,Yes,Atmospheric moisture indicator affecting transpirational demand and fungal risk.
+Solar_Radiation_MJ_m2_day,Original,Float,Raw Dataset,Daily incident solar radiation flux (MJ/m²/day).,Yes,Yes,Photosynthetically active radiation driver for biomass accumulation.
+Irrigation_mm_week,Original,Float,Raw Dataset,Supplemental irrigation applied per week (mm).,Yes,Yes,Farmer-controlled water input compensating for rainfall deficit.
+Fertilizer_kg_acre,Original,Float,Raw Dataset,Fertilizer dosage applied per acre (kg/acre).,Yes,Yes,Nutrient input driving shoot and rhizome biomass synthesis.
+Plant_Height_cm,Original,Float,Raw Dataset,Measured shoot height (cm).,Yes,Yes,Direct morphological indicator of vegetative vigor.
+Leaf_Greenness_Index,Original,Float,Raw Dataset,SPAD / chlorophyll proxy index of foliage.,Yes,Yes,Direct proxy for leaf nitrogen content and photosynthetic capacity.
+Growth_Stage_Ordinal,Engineered,Integer (0-5),Growth_Stage,Ordinal biological progression: Sprouting (0) -> Early Veg (1) -> Veg (2) -> Rhizome Init (3) -> Rhizome Dev (4) -> Maturity (5).,Yes,Yes,Preserves sequential biological phenology across the crop lifecycle.
+Pest_Severity_Ordinal,Engineered,Integer (0-2),Pest_Severity,"Ordinal pest severity score: Low (0), Medium (1), High (2).",Yes,Yes,Quantifies progressive biotic damage from insect infestation.
+Disease_Severity_Ordinal,Engineered,Integer (0-2),Disease_Severity,"Ordinal disease severity score: Low (0), Medium (1), High (2).",Yes,Yes,Quantifies progressive fungal/bacterial rhizome rot pressure.
+District_[DistrictName],Engineered,Binary (0/1),District,10 One-Hot encoded binary indicators for Sri Lankan ginger growing districts.,Yes,Yes,Captures agro-ecological zone specific baseline conditions without imposing artificial ordering.
+Seed_Variety_[VarietyName],Engineered,Binary (0/1),Seed_Variety,"3 One-Hot encoded binary indicators (Chinese, Local, Nadun).",Yes,Yes,Encodes cultivar genetic yield potentials without imposing artificial ordering.
+Soil_Type_[SoilType],Engineered,Binary (0/1),Soil_Type,"3 One-Hot encoded binary indicators (Clay Loam, Loam, Sandy Loam).",Yes,Yes,Encodes soil physical drainage and aeration characteristics.
+Total_Water_Input_mm,Engineered,Float,"Weekly_Rainfall_mm, Irrigation_mm_week",Combined weekly water supply from rainfall and supplemental irrigation: Weekly_Rainfall_mm + Irrigation_mm_week.,Yes,Yes,Represents net water available to crop root zone during observation week.
+Plant_Height_per_DAP,Engineered,Float,"Plant_Height_cm, Days_After_Planting",Mean daily vertical growth velocity: Plant_Height_cm / Days_After_Planting (cm/day).,Yes,Yes,Captures vegetative shoot vigor and early establishment rate.
+Canopy_Greenness_Volume,Engineered,Float,"Plant_Height_cm, Leaf_Greenness_Index",Photosynthetic biomass proxy: Plant_Height_cm * Leaf_Greenness_Index.,Yes,Yes,Strong proxy for cumulative active photosynthetic leaf volume and chlorophyll concentration.
+Biotic_Stress_Index,Engineered,Integer (0-4),"Pest_Severity, Disease_Severity",Combined biotic stress severity score: Pest_Severity_Ordinal + Disease_Severity_Ordinal.,Yes,Yes,Captures cumulative compounding crop stress from multiple biological threats.
+Planting_Month,Engineered,Integer (1-12),Planting_Date,Calendar month of planting extracted from Planting_Date.,Yes,Yes,Captures planting timing relative to Sri Lankan bimodal monsoonal patterns (Yala / Maha).
+Predicted_Final_Yield_t_ha,Original,Float,Raw Dataset,Pre-existing external baseline yield prediction.,Yes,No,LEAKAGE RISK: Exhibits 0.988 correlation with target. Retained in processed data only as external benchmark.
+Actual_Final_Yield_t_ha,Original,Float,Raw Dataset,Ground truth final harvested ginger yield in metric tons per hectare (t/ha).,No (End of season),Target (y),Primary prediction target for all supervised machine learning models.

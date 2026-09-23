@@ -1,0 +1,9 @@
+Evaluation_Category,Model_or_Stage,N_Samples,MAE_t_ha,RMSE_t_ha,R2_Score,MAPE_pct,MAE_kg_ha
+Static Baseline,Dummy (Mean Baseline),1977,2.5016,2.999,-0.0003,20.3492,2501.6
+Static Baseline,Ridge Regression,1977,0.6374,0.7892,0.9307,4.9706,637.4
+Static Full Test,CatBoost (Tuned) — Static Full,1977,0.6022,0.7431,0.9386,4.6829,602.1999999999999
+Dynamic In-Season Horizon,Stage 1: Sprouting (DAP <= 45),313,0.5877,0.7349,0.7705,6.2363,587.7
+Dynamic In-Season Horizon,Stage 2: Early Vegetative (DAP 46-75),202,0.5962,0.7323,0.7281,5.5461,596.1999999999999
+Dynamic In-Season Horizon,Stage 3: Vegetative (DAP 76-120),316,0.5949,0.7332,0.7865,4.9073,594.9
+Dynamic In-Season Horizon,Stage 4: Rhizome Initiation (DAP 121-180),358,0.6229,0.7741,0.7498,4.6904,622.9
+Dynamic In-Season Horizon,Stage 5: Rhizome Dev & Maturity (DAP > 180),788,0.603,0.7388,0.8347,3.7511,603.0

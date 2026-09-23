@@ -1,0 +1,64 @@
+================================================================================
+PHASE 6 SYSTEM INTEGRATION & END-TO-END DYNAMIC PROTOTYPE REPORT
+Research Project: An Explainable AI-Based Dynamic In-Season Ginger Yield Prediction
+Module: Research Methods and Scientific Writing (IT41012)
+================================================================================
+
+1. SYSTEM ARCHITECTURE & INTEGRATION SUMMARY
+--------------------------------------------------------------------------------
+The Phase 6 prototype successfully unifies all Phase 1-5 components into an
+interactive, smallholder-accessible research system:
+
+  [Farmer Input Interface (Streamlit UI)]
+                   │
+  [FarmStateManager & FarmRepository (JSON Persistence)]
+                   │
+  [Strict Temporal Filtering (timestamp <= t)]
+                   │
+  [In-Season Feature Engineering Pipeline]
+                   │
+  [Trained Phase 3 CatBoost Regressor]
+                   │
+  [Dynamic Yield Prediction (t/ha) & PredictionHistory Audit]
+                   │
+  [TreeSHAP Explainer (Base Value + phi_i)]
+                   │
+  [Farmer Explanation Translator & Rule-Based Recommendation Engine]
+                   │
+  [Interactive Farmer Dashboard & Trajectory Visualizer]
+
+2. END-TO-END DEMONSTRATION TRAJECTORY (FARM F0001)
+--------------------------------------------------------------------------------
+Demonstrated multi-step in-season forecast evolution without requiring historical re-entry:
+
+ Step       Date  DAP        Growth_Stage  Predicted_Yield_t_ha  Delta_t_ha  Delta_pct  Cumulative_Irrigation_Hours
+    1 2024-04-14   30           Sprouting               12.0851         NaN        NaN                          0.0
+    2 2024-05-14   60    Early Vegetative               12.5703      0.4852       4.01                          0.0
+    3 2024-05-29   75    Early Vegetative               12.9263      0.3560       2.83                          2.5
+    4 2024-06-23  100          Vegetative               12.6462     -0.2801      -2.17                          2.5
+    5 2024-07-28  135  Rhizome Initiation               14.7544      2.1082      16.67                          4.5
+    6 2024-09-11  180 Rhizome Development               15.8799      1.1255       7.63                          4.5
+    7 2024-11-10  240            Maturity               16.6338      0.7539       4.75                          4.5
+
+3. KEY SCIENTIFIC & TECHNICAL VERIFICATIONS
+--------------------------------------------------------------------------------
+A. ZERO PHYSICAL HARDWARE:
+   Operates strictly on farmer-reported observations, farm profiles, and weather
+   abstractions (Open-Meteo & Mock provider). Zero claim of physical IoT sensors.
+
+B. TEMPORAL LEAKAGE PROTECTION:
+   Reconstructs feature states using strictly data with timestamp <= t. Future
+   crop measurements, future rainfall, and future irrigation are excluded.
+
+C. PREDICTION ≠ EXPLANATION ≠ CAUSATION:
+   TreeSHAP explains model mathematical attribution (phi_i) relative to the global
+   baseline (13.65 t/ha). All translations use non-causal agronomic phrasing.
+
+D. FARMER-FRIENDLY IRRIGATION:
+   Farmers enter pump runtime (hours/minutes). The system converts to depth (mm)
+   if pump capacity is known, or preserves runtime directly as an observable feature.
+
+E. DATA PERSISTENCE:
+   Farm states, observations, irrigation logs, and prediction histories persist
+   seamlessly via FarmRepository across app restarts.
+================================================================================

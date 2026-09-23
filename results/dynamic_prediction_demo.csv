@@ -1,0 +1,8 @@
+Farm_ID,Update_Step,Observation_Date,DAP,Growth_Stage,Event_Description,Previous_Prediction_t_ha,Current_Prediction_t_ha,Prediction_Delta_t_ha,Prediction_Delta_pct,Cumulative_Irrigation_Hours,Recent_Irrigation_Hours
+F0001,1,2024-04-14,30,Sprouting,Initial Emergence Scouting (Sprouting),,12.0851,,,0.0,0.0
+F0001,2,2024-05-14,60,Early Vegetative,Early Vegetative Measurement,12.0851,12.5703,0.4852,4.01,0.0,0.0
+F0001,3,2024-05-29,75,Early Vegetative,Farmer Logs Supplemental Irrigation,12.5703,12.9263,0.356,2.83,2.5,2.5
+F0001,4,2024-06-23,100,Vegetative,Vegetative Scouting (Pest Infestation Detected),12.9263,12.6462,-0.2801,-2.17,2.5,0.0
+F0001,5,2024-07-28,135,Rhizome Initiation,Rhizome Initiation & Recovery Post-Treatment,12.6462,14.7544,2.1082,16.67,4.5,2.0
+F0001,6,2024-09-11,180,Rhizome Development,Rhizome Development Vigor Check,14.7544,15.8799,1.1255,7.63,4.5,0.0
+F0001,7,2024-11-10,240,Maturity,Maturity & Pre-Harvest Assessment,15.8799,16.6338,0.7539,4.75,4.5,0.0

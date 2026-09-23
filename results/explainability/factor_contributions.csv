@@ -1,0 +1,71 @@
+Farm_ID,Step,DAP,Feature,Label,Value,Unit,SHAP_Contribution_t_ha,Direction,Rank,Farmer_Interpretation
+F0001,1,30,Biotic_Stress_Index,Biotic Stress Index,0.0,score (0-4),0.7684,positive,3,Biotic Stress Index (0.0 score (0-4)) contributed +0.768 t/ha towards a higher yield.
+F0001,1,30,Fertilizer_kg_acre,Fertilizer Applied,120.0,kg/acre,0.6643,positive,4,Fertilizer Applied (120.0 kg/acre) contributed +0.664 t/ha towards a higher yield.
+F0001,1,30,Leaf_Greenness_Index,Leaf Greenness Index,40.0,SPAD,0.3625,positive,6,Leaf Greenness Index (40.0 SPAD) contributed +0.363 t/ha towards a higher yield.
+F0001,1,30,Plant_Height_per_DAP,Daily Growth Velocity,0.4667,cm/day,0.3477,positive,7,Daily Growth Velocity (0.4667 cm/day) contributed +0.348 t/ha towards a higher yield.
+F0001,1,30,Soil_pH,Soil pH Level,6.2,pH,0.1889,positive,10,Soil pH Level (6.2 pH) contributed +0.189 t/ha towards a higher yield.
+F0001,1,30,Days_After_Planting,Days After Planting,30.0,days,-1.8055,negative,1,Days After Planting (30.0 days) contributed -1.805 t/ha towards a lower yield.
+F0001,1,30,Canopy_Greenness_Volume,Canopy Greenness Volume,560.0,index,-1.0696,negative,2,Canopy Greenness Volume (560.0 index) contributed -1.070 t/ha towards a lower yield.
+F0001,1,30,Growth_Stage_Ordinal,Growth Stage Level,0.0,stage (0-5),-0.6285,negative,5,Growth Stage Level (0.0 stage (0-5)) contributed -0.629 t/ha towards a lower yield.
+F0001,1,30,Plant_Height_cm,Plant Height,14.0,cm,-0.2997,negative,8,Plant Height (14.0 cm) contributed -0.300 t/ha towards a lower yield.
+F0001,1,30,Total_Water_Input_mm,Total Water Input,41.48,mm,-0.2483,negative,9,Total Water Input (41.48 mm) contributed -0.248 t/ha towards a lower yield.
+F0001,2,60,Biotic_Stress_Index,Biotic Stress Index,0.0,score (0-4),0.7819,positive,3,Biotic Stress Index (0.0 score (0-4)) contributed +0.782 t/ha towards a higher yield.
+F0001,2,60,Fertilizer_kg_acre,Fertilizer Applied,120.0,kg/acre,0.6758,positive,4,Fertilizer Applied (120.0 kg/acre) contributed +0.676 t/ha towards a higher yield.
+F0001,2,60,Plant_Height_per_DAP,Daily Growth Velocity,0.5667,cm/day,0.2481,positive,8,Daily Growth Velocity (0.5667 cm/day) contributed +0.248 t/ha towards a higher yield.
+F0001,2,60,Soil_pH,Soil pH Level,6.2,pH,0.1892,positive,10,Soil pH Level (6.2 pH) contributed +0.189 t/ha towards a higher yield.
+F0001,2,60,Irrigation_mm_week,Weekly Irrigation Applied,0.0,mm,0.0863,positive,11,Weekly Irrigation Applied (0.0 mm) contributed +0.086 t/ha towards a higher yield.
+F0001,2,60,Days_After_Planting,Days After Planting,60.0,days,-1.2308,negative,1,Days After Planting (60.0 days) contributed -1.231 t/ha towards a lower yield.
+F0001,2,60,Canopy_Greenness_Volume,Canopy Greenness Volume,1870.0,index,-0.9191,negative,2,Canopy Greenness Volume (1870.0 index) contributed -0.919 t/ha towards a lower yield.
+F0001,2,60,Growth_Stage_Ordinal,Growth Stage Level,1.0,stage (0-5),-0.3634,negative,5,Growth Stage Level (1.0 stage (0-5)) contributed -0.363 t/ha towards a lower yield.
+F0001,2,60,Plant_Height_cm,Plant Height,34.0,cm,-0.327,negative,6,Plant Height (34.0 cm) contributed -0.327 t/ha towards a lower yield.
+F0001,2,60,Total_Water_Input_mm,Total Water Input,34.74,mm,-0.26,negative,7,Total Water Input (34.74 mm) contributed -0.260 t/ha towards a lower yield.
+F0001,3,75,Biotic_Stress_Index,Biotic Stress Index,0.0,score (0-4),0.7819,positive,2,Biotic Stress Index (0.0 score (0-4)) contributed +0.782 t/ha towards a higher yield.
+F0001,3,75,Fertilizer_kg_acre,Fertilizer Applied,120.0,kg/acre,0.6789,positive,4,Fertilizer Applied (120.0 kg/acre) contributed +0.679 t/ha towards a higher yield.
+F0001,3,75,Plant_Height_per_DAP,Daily Growth Velocity,0.56,cm/day,0.2572,positive,9,Daily Growth Velocity (0.56 cm/day) contributed +0.257 t/ha towards a higher yield.
+F0001,3,75,Soil_pH,Soil pH Level,6.2,pH,0.1874,positive,10,Soil pH Level (6.2 pH) contributed +0.187 t/ha towards a higher yield.
+F0001,3,75,Pest_Severity_Ordinal,Pest Severity Level,0.0,score (0-2),0.0833,positive,11,Pest Severity Level (0.0 score (0-2)) contributed +0.083 t/ha towards a higher yield.
+F0001,3,75,Canopy_Greenness_Volume,Canopy Greenness Volume,2436.0,index,-0.8511,negative,1,Canopy Greenness Volume (2436.0 index) contributed -0.851 t/ha towards a lower yield.
+F0001,3,75,Days_After_Planting,Days After Planting,75.0,days,-0.7047,negative,3,Days After Planting (75.0 days) contributed -0.705 t/ha towards a lower yield.
+F0001,3,75,Growth_Stage_Ordinal,Growth Stage Level,1.0,stage (0-5),-0.4404,negative,5,Growth Stage Level (1.0 stage (0-5)) contributed -0.440 t/ha towards a lower yield.
+F0001,3,75,Weekly_Rainfall_mm,Weekly Rainfall,32.29,mm,-0.3406,negative,6,Weekly Rainfall (32.29 mm) contributed -0.341 t/ha towards a lower yield.
+F0001,3,75,Plant_Height_cm,Plant Height,42.0,cm,-0.3014,negative,7,Plant Height (42.0 cm) contributed -0.301 t/ha towards a lower yield.
+F0001,4,100,Fertilizer_kg_acre,Fertilizer Applied,120.0,kg/acre,0.671,positive,2,Fertilizer Applied (120.0 kg/acre) contributed +0.671 t/ha towards a higher yield.
+F0001,4,100,Plant_Height_per_DAP,Daily Growth Velocity,0.55,cm/day,0.322,positive,5,Daily Growth Velocity (0.55 cm/day) contributed +0.322 t/ha towards a higher yield.
+F0001,4,100,Soil_pH,Soil pH Level,6.2,pH,0.1832,positive,8,Soil pH Level (6.2 pH) contributed +0.183 t/ha towards a higher yield.
+F0001,4,100,Leaf_Greenness_Index,Leaf Greenness Index,48.0,SPAD,0.1545,positive,9,Leaf Greenness Index (48.0 SPAD) contributed +0.155 t/ha towards a higher yield.
+F0001,4,100,Irrigation_mm_week,Weekly Irrigation Applied,0.0,mm,0.1042,positive,11,Weekly Irrigation Applied (0.0 mm) contributed +0.104 t/ha towards a higher yield.
+F0001,4,100,Canopy_Greenness_Volume,Canopy Greenness Volume,2640.0,index,-1.0427,negative,1,Canopy Greenness Volume (2640.0 index) contributed -1.043 t/ha towards a lower yield.
+F0001,4,100,Plant_Height_cm,Plant Height,55.0,cm,-0.3382,negative,3,Plant Height (55.0 cm) contributed -0.338 t/ha towards a lower yield.
+F0001,4,100,Weekly_Rainfall_mm,Weekly Rainfall,30.12,mm,-0.335,negative,4,Weekly Rainfall (30.12 mm) contributed -0.335 t/ha towards a lower yield.
+F0001,4,100,Days_After_Planting,Days After Planting,100.0,days,-0.2897,negative,6,Days After Planting (100.0 days) contributed -0.290 t/ha towards a lower yield.
+F0001,4,100,Total_Water_Input_mm,Total Water Input,30.12,mm,-0.2896,negative,7,Total Water Input (30.12 mm) contributed -0.290 t/ha towards a lower yield.
+F0001,5,135,Biotic_Stress_Index,Biotic Stress Index,0.0,score (0-4),0.7635,positive,1,Biotic Stress Index (0.0 score (0-4)) contributed +0.764 t/ha towards a higher yield.
+F0001,5,135,Fertilizer_kg_acre,Fertilizer Applied,120.0,kg/acre,0.6587,positive,2,Fertilizer Applied (120.0 kg/acre) contributed +0.659 t/ha towards a higher yield.
+F0001,5,135,Plant_Height_per_DAP,Daily Growth Velocity,0.5333,cm/day,0.3075,positive,5,Daily Growth Velocity (0.5333 cm/day) contributed +0.308 t/ha towards a higher yield.
+F0001,5,135,Growth_Stage_Ordinal,Growth Stage Level,3.0,stage (0-5),0.2451,positive,7,Growth Stage Level (3.0 stage (0-5)) contributed +0.245 t/ha towards a higher yield.
+F0001,5,135,Soil_pH,Soil pH Level,6.2,pH,0.1856,positive,9,Soil pH Level (6.2 pH) contributed +0.186 t/ha towards a higher yield.
+F0001,5,135,Canopy_Greenness_Volume,Canopy Greenness Volume,4608.0,index,-0.5857,negative,3,Canopy Greenness Volume (4608.0 index) contributed -0.586 t/ha towards a lower yield.
+F0001,5,135,Weekly_Rainfall_mm,Weekly Rainfall,31.65,mm,-0.3329,negative,4,Weekly Rainfall (31.65 mm) contributed -0.333 t/ha towards a lower yield.
+F0001,5,135,Total_Water_Input_mm,Total Water Input,35.603699999999996,mm,-0.2463,negative,6,Total Water Input (35.603699999999996 mm) contributed -0.246 t/ha towards a lower yield.
+F0001,5,135,Plant_Height_cm,Plant Height,72.0,cm,-0.1942,negative,8,Plant Height (72.0 cm) contributed -0.194 t/ha towards a lower yield.
+F0001,5,135,Leaf_Greenness_Index,Leaf Greenness Index,64.0,SPAD,-0.0879,negative,11,Leaf Greenness Index (64.0 SPAD) contributed -0.088 t/ha towards a lower yield.
+F0001,6,180,Biotic_Stress_Index,Biotic Stress Index,0.0,score (0-4),0.7654,positive,1,Biotic Stress Index (0.0 score (0-4)) contributed +0.765 t/ha towards a higher yield.
+F0001,6,180,Fertilizer_kg_acre,Fertilizer Applied,120.0,kg/acre,0.6653,positive,2,Fertilizer Applied (120.0 kg/acre) contributed +0.665 t/ha towards a higher yield.
+F0001,6,180,Plant_Height_per_DAP,Daily Growth Velocity,0.4667,cm/day,0.4165,positive,3,Daily Growth Velocity (0.4667 cm/day) contributed +0.416 t/ha towards a higher yield.
+F0001,6,180,Days_After_Planting,Days After Planting,180.0,days,0.3397,positive,4,Days After Planting (180.0 days) contributed +0.340 t/ha towards a higher yield.
+F0001,6,180,Growth_Stage_Ordinal,Growth Stage Level,4.0,stage (0-5),0.3162,positive,5,Growth Stage Level (4.0 stage (0-5)) contributed +0.316 t/ha towards a higher yield.
+F0001,6,180,Total_Water_Input_mm,Total Water Input,40.24,mm,-0.2339,negative,6,Total Water Input (40.24 mm) contributed -0.234 t/ha towards a lower yield.
+F0001,6,180,Plant_Height_cm,Plant Height,84.0,cm,-0.2041,negative,7,Plant Height (84.0 cm) contributed -0.204 t/ha towards a lower yield.
+F0001,6,180,Weekly_Rainfall_mm,Weekly Rainfall,40.24,mm,-0.203,negative,8,Weekly Rainfall (40.24 mm) contributed -0.203 t/ha towards a lower yield.
+F0001,6,180,Leaf_Greenness_Index,Leaf Greenness Index,68.0,SPAD,-0.1035,negative,10,Leaf Greenness Index (68.0 SPAD) contributed -0.103 t/ha towards a lower yield.
+F0001,6,180,Canopy_Greenness_Volume,Canopy Greenness Volume,5712.0,index,-0.0288,negative,15,Canopy Greenness Volume (5712.0 index) contributed -0.029 t/ha towards a lower yield.
+F0001,7,240,Days_After_Planting,Days After Planting,240.0,days,1.0779,positive,2,Days After Planting (240.0 days) contributed +1.078 t/ha towards a higher yield.
+F0001,7,240,Biotic_Stress_Index,Biotic Stress Index,0.0,score (0-4),0.7505,positive,3,Biotic Stress Index (0.0 score (0-4)) contributed +0.751 t/ha towards a higher yield.
+F0001,7,240,Fertilizer_kg_acre,Fertilizer Applied,120.0,kg/acre,0.6495,positive,4,Fertilizer Applied (120.0 kg/acre) contributed +0.650 t/ha towards a higher yield.
+F0001,7,240,Growth_Stage_Ordinal,Growth Stage Level,5.0,stage (0-5),0.6073,positive,5,Growth Stage Level (5.0 stage (0-5)) contributed +0.607 t/ha towards a higher yield.
+F0001,7,240,Leaf_Greenness_Index,Leaf Greenness Index,45.0,SPAD,0.4501,positive,6,Leaf Greenness Index (45.0 SPAD) contributed +0.450 t/ha towards a higher yield.
+F0001,7,240,Canopy_Greenness_Volume,Canopy Greenness Volume,3825.0,index,-1.0969,negative,1,Canopy Greenness Volume (3825.0 index) contributed -1.097 t/ha towards a lower yield.
+F0001,7,240,Plant_Height_cm,Plant Height,85.0,cm,-0.1813,negative,9,Plant Height (85.0 cm) contributed -0.181 t/ha towards a lower yield.
+F0001,7,240,Total_Water_Input_mm,Total Water Input,54.78,mm,-0.0926,negative,11,Total Water Input (54.78 mm) contributed -0.093 t/ha towards a lower yield.
+F0001,7,240,Weekly_Rainfall_mm,Weekly Rainfall,54.78,mm,-0.0543,negative,15,Weekly Rainfall (54.78 mm) contributed -0.054 t/ha towards a lower yield.
+F0001,7,240,Soil_Type_Loam,Soil Type: Loam,1.0,binary,-0.0096,negative,17,Soil Type: Loam (1.0 binary) contributed -0.010 t/ha towards a lower yield.

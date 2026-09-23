@@ -1,0 +1,29 @@
+variable,category,count,percentage
+District,Kandy,1033,10.33
+District,Badulla,1026,10.26
+District,Nuwara Eliya,1022,10.22
+District,Kurunegala,1012,10.12
+District,Matara,1011,10.11
+District,Galle,1000,10.0
+District,Kegalle,988,9.88
+District,Monaragala,985,9.85
+District,Ratnapura,962,9.62
+District,Matale,961,9.61
+Growth_Stage,Early Vegetative,2002,20.02
+Growth_Stage,Vegetative,1995,19.95
+Growth_Stage,Rhizome Initiation,1995,19.95
+Growth_Stage,Rhizome Development,1611,16.11
+Growth_Stage,Maturity,1371,13.71
+Growth_Stage,Sprouting,1026,10.26
+Seed_Variety,Chinese,3370,33.7
+Seed_Variety,Local,3335,33.35
+Seed_Variety,Nadun,3295,32.95
+Soil_Type,Clay Loam,3369,33.69
+Soil_Type,Sandy Loam,3361,33.61
+Soil_Type,Loam,3270,32.7
+Pest_Severity,Low,6014,60.14
+Pest_Severity,Medium,2990,29.9
+Pest_Severity,High,996,9.96
+Disease_Severity,Low,6534,65.34
+Disease_Severity,Medium,2480,24.8
+Disease_Severity,High,986,9.86

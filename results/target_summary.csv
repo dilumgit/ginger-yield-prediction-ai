@@ -1,0 +1,2 @@
+target_column,count,missing_count,min,max,mean,median,std,variance,skewness,kurtosis,q25,q75,iqr
+Actual_Final_Yield_t_ha,10000,0,4.0,21.9,13.6387,13.65,3.0079,9.0478,-0.039,-0.6785,11.3475,15.96,4.6125

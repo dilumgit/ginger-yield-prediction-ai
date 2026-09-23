@@ -1,0 +1,8 @@
+Farm_ID,Step,DAP,Growth_Stage,Recommendation
+F0001,1,30,Sprouting,[Good Practice]: Crop parameters and growing conditions are currently in a favorable range. Continue routine field scouting and maintain standard crop management.
+F0001,2,60,Early Vegetative,[Good Practice]: Crop parameters and growing conditions are currently in a favorable range. Continue routine field scouting and maintain standard crop management.
+F0001,3,75,Early Vegetative,[Good Practice]: Crop parameters and growing conditions are currently in a favorable range. Continue routine field scouting and maintain standard crop management.
+F0001,4,100,Vegetative,[Pest Alert]: Pest pressure is currently Medium. Inspect shoot collars for shoot borer damage and foliage for caterpillars; apply approved Integrated Pest Management (IPM) practices.
+F0001,5,135,Rhizome Initiation,[Good Practice]: Crop parameters and growing conditions are currently in a favorable range. Continue routine field scouting and maintain standard crop management.
+F0001,6,180,Rhizome Development,[Good Practice]: Crop parameters and growing conditions are currently in a favorable range. Continue routine field scouting and maintain standard crop management.
+F0001,7,240,Maturity,[Water Management]: Recent rainfall was substantial (54.8 mm). Withhold supplemental irrigation to prevent bed saturation and rhizome fungal infections.

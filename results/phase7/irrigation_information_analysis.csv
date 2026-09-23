@@ -1,0 +1,6 @@
+Farm_ID,DAP,Stage,Forecast_Without_Irrigation_t_ha,Forecast_With_Irrigation_t_ha,Forecast_Delta_t_ha,SHAP_Water_Without_Irrigation_t_ha,SHAP_Water_With_Irrigation_t_ha,SHAP_Water_Shift_t_ha
+F0001,75,Early Vegetative,13.1386,13.1107,-0.027900000000000702,-0.2458,-0.2458,0.0
+F0042,75,Early Vegetative,13.1386,13.1107,-0.027900000000000702,-0.2458,-0.2458,0.0
+F0088,75,Early Vegetative,13.1386,13.1107,-0.027900000000000702,-0.2458,-0.2458,0.0
+F0120,75,Early Vegetative,13.1386,13.1107,-0.027900000000000702,-0.2458,-0.2458,0.0
+F0150,75,Early Vegetative,13.1386,13.1107,-0.027900000000000702,-0.2458,-0.2458,0.0

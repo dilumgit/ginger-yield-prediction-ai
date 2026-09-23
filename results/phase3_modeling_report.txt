@@ -1,0 +1,65 @@
+================================================================================
+PHASE 3: MACHINE LEARNING MODEL DEVELOPMENT & EVALUATION REPORT
+Research Module: IT41012 | Ginger Yield Prediction Research
+================================================================================
+
+1. RESEARCH OBJECTIVE & DATASET SPECIFICATION
+   - Dataset File: D:\ginger-yield-prediction\data\processed\ginger_processed.csv
+   - Total Sample Count: 10,000 observations
+   - Total Unique Farm_IDs: 1,000 farms
+   - Total Model Features (X): 36 predictors
+   - Target Variable (y): Actual_Final_Yield_t_ha (Ground Truth Harvest Yield in t/ha)
+   - Excluded Leakage Column: Predicted_Final_Yield_t_ha
+   - Excluded Identifier: Farm_ID (Used strictly for group-aware partitioning)
+
+2. VALIDATION & PARTITIONING STRATEGY
+   - Split Methodology: GroupShuffleSplit (80% Train / 20% Holdout Test)
+   - Training Set: 8,023 observations across 800 unique Farm_IDs
+   - Hold-Out Test Set: 1,977 observations across 200 unique Farm_IDs
+   - Group Leakage Audit: ZERO overlap between training and testing Farm_IDs (0% leakage)
+   - Internal Validation: 5-Fold GroupKFold cross-validation on training set (160 farms per fold)
+
+3. CANDIDATE MODELS BENCHMARKED
+   1. DummyRegressor (Naive mean baseline)
+   2. Ridge Regression (StandardScaler + L2 Regularized Linear Model)
+   3. RandomForestRegressor (Bagging ensemble with 100 decision trees)
+   4. XGBRegressor (Extreme Gradient Boosting)
+   5. LightGBMRegressor (Leaf-wise gradient boosted trees)
+   6. CatBoostRegressor (Oblivious decision tree gradient boosting)
+
+4. MODEL EVALUATION BENCHMARK TABLE
+                Model  CV_MAE_mean  CV_MAE_std  CV_RMSE_mean  CV_R2_mean  Test_MAE  Test_RMSE  Test_R2  Test_MAPE
+     CatBoost (Tuned)       0.6182      0.0064        0.7585      0.9364    0.6022     0.7431   0.9386     4.6829
+             CatBoost       0.6182      0.0064        0.7585      0.9364    0.6085     0.7506   0.9373     4.7422
+     LightGBM (Tuned)       0.6393      0.0106        0.7835      0.9321    0.6149     0.7545   0.9367     4.7922
+      XGBoost (Tuned)       0.6403      0.0114        0.7870      0.9315    0.6167     0.7561   0.9364     4.7991
+             LightGBM       0.6393      0.0106        0.7835      0.9321    0.6183     0.7585   0.9360     4.8271
+              XGBoost       0.6403      0.0114        0.7870      0.9315    0.6223     0.7644   0.9350     4.8572
+                Ridge       0.6563      0.0095        0.8081      0.9278    0.6374     0.7893   0.9307     4.9707
+Random Forest (Tuned)       0.7070      0.0109        0.8722      0.9159    0.6879     0.8492   0.9198     5.4070
+        Random Forest       0.7070      0.0109        0.8722      0.9159    0.6894     0.8491   0.9198     5.4136
+         Dummy (Mean)       2.5067      0.0189        3.0115     -0.0029    2.5016     2.9990  -0.0003    20.3492
+
+5. HYPERPARAMETER TUNING SUMMARY
+        Model  Best_CV_MAE                                                                                          Best_Parameters
+     CatBoost       0.6167                                 {'learning_rate': 0.06, 'l2_leaf_reg': 3, 'iterations': 350, 'depth': 4}
+     LightGBM       0.6341         {'subsample': 0.85, 'num_leaves': 31, 'n_estimators': 150, 'max_depth': 4, 'learning_rate': 0.1}
+      XGBoost       0.6340 {'subsample': 1.0, 'n_estimators': 150, 'max_depth': 4, 'learning_rate': 0.06, 'colsample_bytree': 0.85}
+Random Forest       0.7056                   {'n_estimators': 150, 'min_samples_split': 10, 'min_samples_leaf': 2, 'max_depth': 16}
+
+6. BEST MODEL SELECTION & FINDINGS
+   - Best Selected Model: CatBoost (Tuned)
+   - Test MAE:  0.6022 t/ha
+   - Test RMSE: 0.7431 t/ha
+   - Test R²:   0.9386
+   - Test MAPE: 4.68%
+   - Serialized Artifact: D:\ginger-yield-prediction\models\best_model.joblib
+
+7. AGRONOMIC INTERPRETATION & LIMITATIONS
+   - Interpretation: Gradient boosted tree ensembles (CatBoost and LightGBM) significantly outperformed linear baselines, demonstrating strong capacity to model non-linear interactions between weather (rainfall/temperature), soil properties, and vegetative vigor.
+   - Limitation 1: Static full-season modeling assumes complete feature vector availability. Stage-specific dynamic degradation will be tackled in Phase 4.
+   - Limitation 2: Residual distributions show mild variance broadening at extreme yield values (> 18 t/ha).
+
+================================================================================
+END OF PHASE 3 REPORT
+================================================================================

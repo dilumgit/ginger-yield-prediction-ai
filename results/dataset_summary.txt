@@ -1,0 +1,83 @@
+================================================================================
+RESEARCH DATASET INSPECTION SUMMARY REPORT
+Project: Explainable AI-Based Dynamic In-Season Ginger Yield Prediction
+================================================================================
+
+1. DATASET DIMENSIONS & STRUCTURE
+   - Total Observations (Rows): 10,000
+   - Total Attributes (Columns): 22
+   - Memory Footprint: 5.358 MB
+   - Duplicate Rows: 0
+   - Total Missing Cells: 0
+
+2. COLUMN ROLES AND DATA TYPES
+   - Farm_ID                        : object      [IDENTIFIER]
+   - District                       : object      [CATEGORICAL FEATURE]
+   - Planting_Date                  : object     
+   - Days_After_Planting            : int64       [NUMERICAL FEATURE]
+   - Growth_Stage                   : object      [CATEGORICAL FEATURE]
+   - Land_Size_Acres                : float64     [NUMERICAL FEATURE]
+   - Seed_Variety                   : object      [CATEGORICAL FEATURE]
+   - Soil_Type                      : object      [CATEGORICAL FEATURE]
+   - Soil_pH                        : float64     [NUMERICAL FEATURE]
+   - Soil_Moisture_pct              : float64     [NUMERICAL FEATURE]
+   - Weekly_Rainfall_mm             : float64     [NUMERICAL FEATURE]
+   - Avg_Temperature_C              : float64     [NUMERICAL FEATURE]
+   - Relative_Humidity_pct          : float64     [NUMERICAL FEATURE]
+   - Solar_Radiation_MJ_m2_day      : float64     [NUMERICAL FEATURE]
+   - Irrigation_mm_week             : float64     [NUMERICAL FEATURE]
+   - Fertilizer_kg_acre             : float64     [NUMERICAL FEATURE]
+   - Pest_Severity                  : object      [CATEGORICAL FEATURE]
+   - Disease_Severity               : object      [CATEGORICAL FEATURE]
+   - Plant_Height_cm                : float64     [NUMERICAL FEATURE]
+   - Leaf_Greenness_Index           : float64     [NUMERICAL FEATURE]
+   - Predicted_Final_Yield_t_ha     : float64     [LEAKAGE RISK - BENCHMARK ONLY]
+   - Actual_Final_Yield_t_ha        : float64     [TARGET VARIABLE]
+
+3. TARGET VARIABLE SUMMARY (Actual_Final_Yield_t_ha)
+   - target_column            : Actual_Final_Yield_t_ha
+   - count                    : 10000
+   - missing_count            : 0
+   - min                      : 4.0
+   - max                      : 21.9
+   - mean                     : 13.6387
+   - median                   : 13.65
+   - std                      : 3.0079
+   - variance                 : 9.0478
+   - skewness                 : -0.039
+   - kurtosis                 : -0.6785
+   - q25                      : 11.3475
+   - q75                      : 15.96
+   - iqr                      : 4.6125
+
+4. EXISTING PREDICTION FIELD PROFILE (Predicted_Final_Yield_t_ha)
+   WARNING: Isolated from model training to prevent target leakage.
+   - column_name                   : Predicted_Final_Yield_t_ha
+   - role                          : EXTERNAL_BENCHMARK_ONLY (DO NOT USE AS ML INPUT FEATURE)
+   - missing_count                 : 0
+   - min                           : 4.08
+   - max                           : 21.49
+   - mean                          : 13.6409
+   - median                        : 13.65
+   - std                           : 2.9744
+   - correlation_with_actual       : 0.988
+   - mae_vs_actual                 : 0.4046
+   - rmse_vs_actual                : 0.4654
+   - mean_error_bias               : 0.0022
+   - max_underprediction           : -0.8
+   - max_overprediction            : 0.8
+
+5. DYNAMIC FEASIBILITY FINDINGS & LIMITATIONS
+   - Farm IDs Present: True
+   - Unique Farm IDs: 1000
+   - Observations per Farm: min=1, mean=10.0, max=21
+   - Farms with Varying Districts: 999 (99.9%)
+   - Farms with Varying Final Yield: 999 (99.9%)
+   - Research Limitation Note:
+     CRITICAL RESEARCH FINDING: In the current dataset, records sharing the same 'Farm_ID' exhibit varying Districts, Planting Dates, and Final Actual Yield values. This confirms that 'Farm_ID' was randomly assigned or sampled per observation rather than tracking a true physical farm over a single cultivation cycle. Consequently, dynamic prediction must be framed as growth-stage/DAP-indexed observation slices rather than true farm-level longitudinal panel tracking.
+   - Recommended Modeling Strategy:
+     Model dynamic in-season predictions using stratified growth-stage cohorts (e.g., Emergence, Vegetative, Rhizome Initiation, Rhizome Enlargement, Maturity) where cumulative feature observations up to stage 't' predict the final yield.
+
+================================================================================
+END OF INSPECTION REPORT
+================================================================================

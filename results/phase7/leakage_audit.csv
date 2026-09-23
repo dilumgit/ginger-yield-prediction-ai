@@ -1,0 +1,7 @@
+Audit_Point,Rule,Observed_Status,Compliant
+1. Target Variable Exclusion,'Actual_Final_Yield_t_ha' must NEVER be in model feature matrix,Excluded,True
+2. Baseline Leakage Exclusion,Predicted_Final_Yield_t_ha must be strictly excluded from model feature matrix,Excluded,True
+3. Farm Identifier Exclusion,Farm_ID must NEVER be used as an ML predictor,Excluded,True
+4. Future Crop Observation Filtering,Observations with timestamp > t must be strictly discarded at state reconstruction,Protected (Filtered <= t),True
+5. Future Irrigation Event Filtering,Irrigation events with timestamp > t must be strictly discarded at state reconstruction,Protected (Filtered <= t),True
+6. Future Weather Observation Filtering,Weather records with timestamp > t must be strictly discarded at state reconstruction,Protected (Filtered <= t),True
