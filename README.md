@@ -44,13 +44,13 @@ This project implements an Explainable AI (XAI)-based Dynamic In-Season Ginger Y
 
 ## Key Features
 
-- **Dynamic In-Season Forecasting**: Reconstructs farm state and produces updated final harvest forecasts ($t/ha$ and total $kg$ for the farm's acreage) whenever new crop observations or irrigation events are recorded, tracking prediction deltas ($\Delta$).
+- **Dynamic In-Season Forecasting**: Reconstructs farm state and produces updated final harvest forecasts (in t/ha and total kg for the farm's acreage) whenever new crop observations or irrigation events are recorded, tracking prediction deltas (Δ).
 - **Zero Physical Hardware / IoT Requirement**: Operates completely in software using farmer-reported scouting observations, water pump runtime logs, and automated Open-Meteo meteorological API ingestion.
-- **Farmer-Friendly Irrigation Conversion**: Farmers log accessible pump operating hours (or minutes); the system automatically calculates water volume ($L$) and effective depth ($mm$) if pump capacity is known, or preserves runtime as an observable feature.
+- **Farmer-Friendly Irrigation Conversion**: Farmers log accessible pump operating hours (or minutes); the system automatically calculates water volume (L) and effective depth (mm) if pump capacity is known, or preserves runtime as an observable feature.
 - **Game-Theoretic XAI (TreeSHAP)**: Deconstructs model forecasts into additive feature attributions ($\phi_i$) with verified mathematical additivity ($\epsilon < 10^{-13}\text{ t/ha}$).
 - **Non-Causal Plain-Language Farmer Narratives**: Translates technical SHAP attributions into accessible language, strictly separating mathematical association from biological causation.
-- **Rule-Based Decision Support**: Provides context-aware agricultural advisories (e.g., withholding supplemental irrigation when 7-day rainfall $\ge 50\text{ mm}$ to prevent rhizome fungal rot).
-- **Zero Data Leakage Architecture**: Enforces temporal isolation ($t \le \text{observation date}$) and GroupShuffleSplit partitioning on unique `Farm_ID`s to guarantee 0% train/test farm overlap.
+- **Rule-Based Decision Support**: Provides context-aware agricultural advisories (e.g., withholding supplemental irrigation when 7-day rainfall ≥ 50 mm to prevent rhizome fungal rot).
+- **Zero Data Leakage Architecture**: Enforces temporal isolation (observation timestamp ≤ t) and GroupShuffleSplit partitioning on unique `Farm_ID`s to guarantee 0% train/test farm overlap.
 - **Persistent Farm Storage**: File-based JSON repository preserves farm profiles, longitudinal scouting records, irrigation logs, and prediction histories across sessions.
 
 ---
@@ -92,7 +92,7 @@ This project implements an Explainable AI (XAI)-based Dynamic In-Season Ginger Y
 ## How It Works
 
 ### 1. Dynamic Prediction Concept
-**"Dynamic"** means that whenever new or current farm information becomes available at any point during cultivation, the system incorporates the newly provided observation, updates the current farm state, and immediately generates an updated final ginger yield prediction ($t/ha$).
+**"Dynamic"** means that whenever new or current farm information becomes available at any point during cultivation, the system incorporates the newly provided observation, updates the current farm state, and immediately generates an updated final ginger yield prediction (t/ha).
 
 Dynamic prediction does not require full historical re-entry; previous records are preserved in the `FarmStateManager` and appended with the new observation.
 
@@ -106,8 +106,8 @@ To avoid burdening farmers with complex volumetric calculations, the system reco
 
 When pump capacity is known in the farm profile:
 $$\text{Water Volume (L)} = \text{Pump Runtime (hours)} \times \text{Pump Capacity (L/h)}$$
-$$\text{Cultivated Area } (m^2) = \text{Land Size (Acres)} \times 4046.86\text{ } m^2/\text{acre}$$
-$$\text{Estimated Irrigation Depth (mm)} = \frac{\text{Water Volume (L)}}{\text{Cultivated Area } (m^2)} \quad (\text{since } 1\text{ mm} = 1\text{ L}/m^2)$$
+$$\text{Cultivated Area } (\text{m}^2) = \text{Land Size (Acres)} \times 4046.86\text{ m}^2/\text{acre}$$
+$$\text{Estimated Irrigation Depth (mm)} = \frac{\text{Water Volume (L)}}{\text{Cultivated Area } (\text{m}^2)} \quad (1\text{ mm} = 1\text{ L/m}^2)$$
 
 If pump capacity is unknown, the system retains **`Pump_Runtime_Hours`** directly as an observable feature.
 
@@ -119,16 +119,16 @@ If pump capacity is unknown, the system retains **`Pump_Runtime_Hours`** directl
 The model operates on **36 predictive features**:
 - **12 Raw Numerical Features**: `Days_After_Planting`, `Land_Size_Acres`, `Soil_pH`, `Soil_Moisture_pct`, `Weekly_Rainfall_mm`, `Avg_Temperature_C`, `Relative_Humidity_pct`, `Solar_Radiation_MJ_m2_day`, `Irrigation_mm_week`, `Fertilizer_kg_acre`, `Plant_Height_cm`, `Leaf_Greenness_Index`.
 - **5 In-Season Engineered Features**:
-  1. `Total_Water_Input_mm` = $\text{Weekly\_Rainfall\_mm} + \text{Irrigation\_mm\_week}$
-  2. `Plant_Height_per_DAP` = $\text{Plant\_Height\_cm} / \text{Days\_After\_Planting}$ (Growth velocity)
-  3. `Canopy_Greenness_Volume` = $\text{Plant\_Height\_cm} \times \text{Leaf\_Greenness\_Index}$ (Photosynthetic proxy)
-  4. `Biotic_Stress_Index` = $\text{Pest\_Severity\_Ordinal} + \text{Disease\_Severity\_Ordinal}$ (Score: 0 to 4)
+  1. `Total_Water_Input_mm` = `Weekly_Rainfall_mm` + `Irrigation_mm_week` (Combined natural rainfall and supplemental irrigation)
+  2. `Plant_Height_per_DAP` = `Plant_Height_cm` / `Days_After_Planting` (Daily vertical elongation velocity in cm/day)
+  3. `Canopy_Greenness_Volume` = `Plant_Height_cm` × `Leaf_Greenness_Index` (Photosynthetic active canopy proxy)
+  4. `Biotic_Stress_Index` = `Pest_Severity_Ordinal` + `Disease_Severity_Ordinal` (Cumulative biotic stress score: 0 to 4)
   5. `Planting_Month` = Calendar month extracted from `Planting_Date` (Monsoon seasonality proxy)
 - **3 Ordinal Encodings**: `Growth_Stage_Ordinal` (0 to 5), `Pest_Severity_Ordinal` (0 to 2), `Disease_Severity_Ordinal` (0 to 2).
 - **16 One-Hot Dummies**: 10 Districts, 3 Seed Varieties (`Chinese`, `Local`, `Nadun`), 3 Soil Types (`Clay Loam`, `Loam`, `Sandy Loam`).
 
 ### 2. Group-Aware Partitioning & Cross-Validation
-- **Hold-Out Split**: 80% Training ($n=8,023$ across 800 unique farms) and 20% Testing ($n=1,977$ across 200 unique farms) partitioned via `GroupShuffleSplit` on `Farm_ID`.
+- **Hold-Out Split**: 80% Training (n = 8,023 across 800 unique farms) and 20% Testing (n = 1,977 across 200 unique farms) partitioned via `GroupShuffleSplit` on `Farm_ID`.
 - **Zero Group Overlap**: Guaranteed 0% farm overlap between training and testing splits.
 - **Internal Cross-Validation**: 5-Fold `GroupKFold` cross-validation on the 800 training farms.
 
@@ -138,16 +138,16 @@ The model operates on **36 predictive features**:
 
 ### Static Full-Season Benchmark Comparison
 
-Evaluated on the untouched hold-out test set ($n=1,977$ observations across 200 distinct test farms):
+Evaluated on the untouched hold-out test set (n = 1,977 observations across 200 distinct test farms):
 
-| Model | 5-Fold CV MAE ($t/ha$) | Test MAE ($t/ha$) | Test RMSE ($t/ha$) | Test $R^2$ | Test MAPE (%) |
+| Model | 5-Fold CV MAE (t/ha) | Test MAE (t/ha) | Test RMSE (t/ha) | Test R² | Test MAPE (%) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **CatBoost (Tuned)** *(Selected Best)* | **$0.6167 \pm 0.0064$** | **0.6022** | **0.7431** | **0.9386** | **4.68%** |
-| **LightGBM (Tuned)** | $0.6341 \pm 0.0106$ | 0.6149 | 0.7545 | 0.9367 | 4.79% |
-| **XGBoost (Tuned)** | $0.6340 \pm 0.0114$ | 0.6167 | 0.7561 | 0.9364 | 4.80% |
-| **Ridge Regression** | $0.6563 \pm 0.0095$ | 0.6374 | 0.7893 | 0.9307 | 4.97% |
-| **Random Forest (Tuned)** | $0.7056 \pm 0.0109$ | 0.6879 | 0.8492 | 0.9198 | 5.41% |
-| **Dummy (Mean Baseline)** | $2.5067 \pm 0.0189$ | 2.5016 | 2.9990 | -0.0003 | 20.35% |
+| **CatBoost (Tuned)** *(Selected Best)* | **0.6167 ± 0.0064** | **0.6022** | **0.7431** | **0.9386** | **4.68%** |
+| **LightGBM (Tuned)** | 0.6341 ± 0.0106 | 0.6149 | 0.7545 | 0.9367 | 4.79% |
+| **XGBoost (Tuned)** | 0.6340 ± 0.0114 | 0.6167 | 0.7561 | 0.9364 | 4.80% |
+| **Ridge Regression** | 0.6563 ± 0.0095 | 0.6374 | 0.7893 | 0.9307 | 4.97% |
+| **Random Forest (Tuned)** | 0.7056 ± 0.0109 | 0.6879 | 0.8492 | 0.9198 | 5.41% |
+| **Dummy (Mean Baseline)** | 2.5067 ± 0.0189 | 2.5016 | 2.9990 | -0.0003 | 20.35% |
 
 ### Evaluation Visualizations
 
@@ -169,8 +169,8 @@ Where:
 - Verified max reconstruction error: $\epsilon < 1.07 \times 10^{-14}\text{ t/ha}$.
 
 ### Scientific Boundary: Prediction ≠ Explanation ≠ Causation
-- **Prediction**: Quantitative numerical output ($\hat{y}$) from the regression model.
-- **Explanation**: Additive feature attribution ($\phi_i$) quantifying how much each input shifted the forecast from the baseline.
+- **Prediction**: Quantitative numerical output (`ŷ`) from the regression model.
+- **Explanation**: Additive feature attribution (`φ_i`) quantifying how much each input shifted the forecast from the baseline.
 - **Causation**: SHAP values explain **model behavior**, not biological cause-and-effect. All translations use strictly non-causal phrasing (*"associated with prediction change"*, *"supporting the prediction"*).
 
 | Global Feature Importance (Beeswarm) | Local Instance Attribution (Waterfall) |
@@ -183,19 +183,19 @@ Where:
 
 ### Developmental Growth Stage Accuracy
 
-Evaluated across developmental checkpoints on hold-out test farms ($n=1,977$, 200 farms):
+Evaluated across developmental checkpoints on hold-out test farms (n = 1,977, 200 farms):
 
-| Growth Stage Horizon | DAP Range | Test Samples | Test Farms | MAE ($t/ha$) | RMSE ($t/ha$) | $R^2$ Score | MAPE (%) | MAE ($kg/ha$) |
+| Growth Stage Horizon | DAP Range | Test Samples | Test Farms | MAE (t/ha) | RMSE (t/ha) | R² Score | MAPE (%) | MAE (kg/ha) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Stage 1: Sprouting** | $1 - 45$ | 313 | 152 | **0.5877** | 0.7349 | 0.7705 | 6.24% | **587.7** |
-| **Stage 2: Early Vegetative** | $46 - 75$ | 202 | 125 | **0.5962** | 0.7323 | 0.7281 | 5.55% | **596.2** |
-| **Stage 3: Vegetative** | $76 - 120$ | 316 | 158 | **0.5949** | 0.7332 | 0.7865 | 4.91% | **594.9** |
-| **Stage 4: Rhizome Initiation** | $121 - 180$ | 358 | 163 | **0.6229** | 0.7741 | 0.7498 | 4.69% | **622.9** |
-| **Stage 5: Rhizome Dev & Maturity** | $181 - 365$ | 788 | 200 | **0.6030** | 0.7388 | 0.8347 | **3.75%** | **603.0** |
+| **Stage 1: Sprouting** | 1 – 45 | 313 | 152 | **0.5877** | 0.7349 | 0.7705 | 6.24% | **587.7** |
+| **Stage 2: Early Vegetative** | 46 – 75 | 202 | 125 | **0.5962** | 0.7323 | 0.7281 | 5.55% | **596.2** |
+| **Stage 3: Vegetative** | 76 – 120 | 316 | 158 | **0.5949** | 0.7332 | 0.7865 | 4.91% | **594.9** |
+| **Stage 4: Rhizome Initiation** | 121 – 180 | 358 | 163 | **0.6229** | 0.7741 | 0.7498 | 4.69% | **622.9** |
+| **Stage 5: Rhizome Dev & Maturity** | 181 – 365 | 788 | 200 | **0.6030** | 0.7388 | 0.8347 | **3.75%** | **603.0** |
 
 ### Statistical Significance of In-Season Updates
-- Evaluated on $n=1,777$ consecutive in-season farm update transitions.
-- **Paired t-test**: $t = 16.92$, $p = 1.10 \times 10^{-59}$ (Confirms statistically significant error reduction as in-season data accumulates).
+- Evaluated on n = 1,777 consecutive in-season farm update transitions.
+- **Paired t-test**: `t = 16.92`, `p = 1.10 × 10⁻⁵⁹` (Confirms statistically significant error reduction as in-season data accumulates).
 
 | Static vs. Dynamic Progression | End-to-End Prediction Trajectory |
 | :---: | :---: |
@@ -207,7 +207,7 @@ Evaluated across developmental checkpoints on hold-out test farms ($n=1,977$, 20
 
 The project includes an accessible Streamlit web application for farmers, extension officers, and researchers:
 
-- **Farm Dashboard**: Displays expected harvest in total kilograms ($kg$) for the farmer's acreage, current growth stage, plant height velocity, recent irrigation runtime, plain-language agronomic summary, and dynamic trajectory chart.
+- **Farm Dashboard**: Displays expected harvest in total kilograms (kg) for the farmer's acreage, current growth stage, plant height velocity, recent irrigation runtime, plain-language agronomic summary, and dynamic trajectory chart.
 - **Crop Observation Logging**: Ingests new scouting measurements (height, SPAD greenness, pest/disease severity) and automatically calculates DAP.
 - **Farmer Irrigation Logging**: Ingests pump runtime (hours/minutes), water source, and method.
 - **Explainability Explorer**: Interactive TreeSHAP waterfall charts, positive vs. negative factor breakdowns, and plain-language translations.
@@ -410,7 +410,7 @@ The dataset comprises **10,000 observations** across **1,000 distinct farms** re
 ## Limitations & Research Assumptions
 
 1. **Synthetic Experimental Baseline**: The primary 10,000-row research dataset contains cross-sectionally sampled synthetic observations representing Sri Lankan agro-ecological distributions.
-2. **Weekly Aggregation**: Environmental data is aggregated over 7-day retrospective windows ending on observation date $t$, rather than continuous hourly sensor logs.
+2. **Weekly Aggregation**: Environmental data is aggregated over 7-day retrospective windows ending on observation date t, rather than continuous hourly sensor logs.
 3. **Non-Causal Interpretability**: TreeSHAP values reflect mathematical statistical association within the CatBoost model and should not be interpreted as proven biological causation.
 
 ---
