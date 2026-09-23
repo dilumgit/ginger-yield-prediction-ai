@@ -499,10 +499,12 @@ def test_update_farm_state_with_weather_pipeline():
 
 def test_streamlit_ui_no_manual_rainfall_input():
     """Verify Streamlit Update Crop Observation interface contains no manual rainfall input."""
+    from pathlib import Path
     from streamlit.testing.v1 import AppTest
     from datetime import date
 
-    at = AppTest.from_file("src/ui/app.py", default_timeout=30)
+    app_path = Path(__file__).resolve().parents[1] / "src" / "ui" / "app.py"
+    at = AppTest.from_file(str(app_path), default_timeout=30)
     at.run()
     at.sidebar.radio[0].set_value("📝 Update Crop Observation").run()
 

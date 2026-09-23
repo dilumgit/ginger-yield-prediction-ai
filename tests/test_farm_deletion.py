@@ -208,7 +208,8 @@ def test_streamlit_ui_delete_confirmation_and_cancel_workflow():
     repo.save_farm_state(mgr, pred)
 
     try:
-        at = AppTest.from_file("src/ui/app.py", default_timeout=30)
+        app_path = Path(__file__).resolve().parents[1] / "src" / "ui" / "app.py"
+        at = AppTest.from_file(str(app_path), default_timeout=30)
         at.run()
         if test_id in at.sidebar.selectbox[0].options:
             at.sidebar.selectbox[0].set_value(test_id).run()
